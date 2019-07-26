@@ -37,22 +37,24 @@
             <th>Request Id</th>
             <th>Item Name</th>
             <th>Quantity</th>
+            <th>Available Qt.</th>
             <th>Request Date</th>
             <th>Employee Id</th>
             <th>Actions</th>
         </tr>
     </thead>
     <tbody>
-    {% for reqs in req %}
+    {% for reqs in ite %}
     <tr>
-        <td>{{ reqs.request_id }}</td>
-        <td>{{ reqs.item_name }}</td>
-        <td>{{ reqs.qty }}</td>
-        <td>{{ reqs.date }}</td>
-        <td>{{ reqs.emp_id }}</td>
+        <td>{{ reqs.req.request_id }}</td>
+        <td>{{ reqs.req.item_name }}</td>
+        <td>{{ reqs.req.qty }}</td>
+        <td>{{ reqs.cou}}</td>
+        <td>{{ reqs.req.date }}</td>
+        <td>{{ reqs.req.emp_id }}</td>
         <td>
-            <a href="approve/{{ reqs.request_id }}/"><span class="glyphicon glyphicon-pencil">Approve</span> </a>
-            <a href="delete/{{ reqs.request_id }}/">Delete</a>
+            <a href="approve/{{ reqs.req.request_id }}/"><span class="glyphicon glyphicon-pencil">Approve</span> </a>
+            <a href="delete/{{ reqs.req.request_id }}/">Delete</a>
         </td>
     </tr>
     {% endfor %}

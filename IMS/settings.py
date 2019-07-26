@@ -51,6 +51,7 @@ INSTALLED_APPS = [
 ]
 
 IMPORT_EXPORT_USE_TRANSACTIONS = True
+ALLOWED_HOSTS = ['*']
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .forms import queryform
+from .forms import queryform, queryform2
 from adminprofile.models import items
 from adminrequest.models import approval
 from signup.models import Employee
@@ -7,6 +7,13 @@ from newrequest.models import NewRequest
 from django.db import connection
 from datetime import date
 import datetime
+
+def dictfetchall(cursor):
+    columns = [col[0] for col in cursor.description]
+    return [
+        dict(zip(columns,row))
+        for row in cursor.fetchall()
+    ]
 def addYears(d,years):
     try:
         return d.replace(year = d.year + years)
@@ -57,3 +64,42 @@ def query(request):
             return render(request,'dashboard/info1.html',{'item':item, 'appr':appr, 'ename':ename})
         return render(request,'dashboard/info.html',{'item':item})
     return render(request,'dashboard/query.html',{'form':form})
+
+
+
+def query1(request):
+    cursor = connection.cursor()
+    cursor.execute('select distinct Name from items')
+    names = dictfetchall(cursor)
+    cursor.execute('select distinct Type from items')
+    types = dictfetchall(cursor)
+    cursor.execute('select distinct id from items')
+    ids = dictfetchall(cursor)
+    cursor.execute('select distinct Bond_Id from items')
+    bonds = dictfetchall(cursor)
+    dicti = {'name1': "*", "type1": "*", "id1": "*","bond1":"*"}
+    form = queryform2(request.POST)
+    if form.is_valid():
+        dicti['name1'] = form.cleaned_data['name2']
+        dicti['type1'] = form.cleaned_data['type2']
+        dicti['id1'] = form.cleaned_data['id2']
+        dicti['bond1'] = form.cleaned_data['bond2']
+    itemss = items.objects.filter()
+    print(dicti['name1'],dicti['name1'])
+    print(dicti['type1'])
+    print(dicti['bond1'],dicti['bond1'])
+    if(dicti['name1'] != "*"):
+        itemss = itemss.filter(Name = dicti['name1'])
+    if (dicti['id1'] != "*"):
+        itemss = itemss.filter(id = dicti['id1'])
+    if (dicti['bond1'] != "*"):
+        itemss = itemss.filter(Bond_Id = dicti['bond1'])
+    if (dicti['type1'] != "*"):
+        itemss = itemss.filter(Type = dicti['type1'])
+    return render(request,'dashboard/home.html',{'form':form, 'dicti':dicti, 'names':names, 'types':types, 'ids':ids, 'bonds':bonds, 'itemss':itemss})
+
+def xyz(request):
+    cursor = connection.cursor()
+    cursor.execute('select distinct id from items')
+    ids = dictfetchall(cursor)
+    return render(request,'dashboard/xyz.html',{'ids':ids})

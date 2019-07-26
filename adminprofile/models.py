@@ -16,7 +16,7 @@ class useradmin(models.Model):
         db_table = "useradmin"
 
 class items(models.Model):
-    Name = models.CharField(max_length= 1000, null=True)
+    Name = models.CharField(max_length= 10000,null=True)
     Description = models.TextField(blank=True,null=True)
     Type = models.CharField(max_length=1000, null=True)
     id = models.CharField(primary_key= True,max_length=1000)
